@@ -1,54 +1,32 @@
-# docker-compose.yml
-version: "3.9"
+version: '3'
 
 services:
   web:
     build: .
-    # ⬇ run with or without debugpy based on DEBUG_ATTACH flag
-    command: >
-      sh -c '
-        if [ "$DEBUG_ATTACH" = "true" ]; then
-          echo "[web] 🔍 Starting in DEBUG mode (port 5678)";
-          python -m debugpy --listen 0.0.0.0:5678 --wait-for-client \
-            manage.py migrate &&
-          python -m debugpy --listen 0.0.0.0:5678 \
-            manage.py runserver 0.0.0.0:${DJANGO_PORT:-8082} --noreload
-        else
-          python manage.py migrate &&
-          python manage.py runserver 0.0.0.0:${DJANGO_PORT:-8082}
-        fi
-      '
+    command: python manage.py runserver 0.0.0.0:8082
     volumes:
       - .:/app
-    env_file: [.env]
     ports:
-      - "${DJANGO_PORT:-8082}:${DJANGO_PORT:-8082}"
-      # expose debug port only when you set DEBUG_ATTACH=true
-      - "5678:5678"
+      - "8082:8082"
     depends_on:
-      db:
-        condition: service_healthy
-    networks: [app-network]
-    restart: unless-stopped
+      - db
+    env_file:
+      - .env
+    networks:
+      - app-network
 
   db:
     image: postgres:14
-    env_file: [.env]
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks: [app-network]
-    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - "5434:5432" 
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
