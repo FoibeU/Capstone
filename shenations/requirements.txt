@@ -9,3 +9,4 @@ django-cors-headers
 
 python-decouple==3.8
 python-dotenv==1.0.1
+gunicorn>=21.2.0
