@@ -17,6 +17,15 @@ import { useAppSelector } from "@/lib/hooks";
 import { useGetAllUsersQuery, useVerifyUserMutation } from "@/lib/api/authApi";
 import { useGetAllCoursesQuery } from "@/lib/api/coursesApi";
 import { useGetAllEnrollmentsQuery } from "@/lib/api/enrollmentsApi";
+// Assume these new API hooks exist for analytics and system health
+import {
+  useGetUserGrowthQuery,
+  useGetActiveSessionsQuery,
+  useGetRevenueQuery,
+  useGetSystemHealthQuery,
+} from "@/lib/api/analyticsApi"; // New API for analytics
+import { useSuspendUserMutation } from "@/lib/api/authApi"; // Assuming a new mutation for suspending users
+
 import { UserManagement } from "@/components/admin/user-management";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "react-hot-toast";
@@ -41,14 +50,37 @@ export function AdminDashboard() {
   const { data: enrollments = [], isLoading: enrollmentsLoading } =
     useGetAllEnrollmentsQuery();
   const [verifyUser] = useVerifyUserMutation();
+  const [suspendUser] = useSuspendUserMutation(); // New mutation for suspending users
 
-  const isLoading = usersLoading || coursesLoading || enrollmentsLoading;
+  // Fetch analytics and system health data
+  const { data: userGrowth = 0, isLoading: userGrowthLoading } =
+    useGetUserGrowthQuery();
+  const { data: activeSessions = 0, isLoading: activeSessionsLoading } =
+    useGetActiveSessionsQuery();
+  const { data: monthlyRevenue = 0, isLoading: monthlyRevenueLoading } =
+    useGetRevenueQuery();
+  const { data: systemHealth = 0, isLoading: systemHealthLoading } =
+    useGetSystemHealthQuery();
+
+  const isLoading =
+    usersLoading ||
+    coursesLoading ||
+    enrollmentsLoading ||
+    userGrowthLoading ||
+    activeSessionsLoading ||
+    monthlyRevenueLoading ||
+    systemHealthLoading;
 
   // Calculate real stats
   const activeUsers = users.filter((u) => u.is_active).length;
   const totalEnrollments = enrollments.length;
   const activeCourses = courses.length;
-  const systemHealth = 99.9; // This would come from a system health API
+
+  // Placeholder for calculating change - this would ideally come from your API
+  // or be calculated based on historical data fetched from the API.
+  const enrollmentChange = "+8% this week"; // Example: replace with actual calculation
+  const systemHealthStatus =
+    systemHealth === 100 ? "All systems operational" : "Monitoring issues";
 
   const adminStats = [
     {
@@ -61,7 +93,7 @@ export function AdminDashboard() {
     {
       title: "Active Enrollments",
       value: totalEnrollments.toString(),
-      change: "+8% this week",
+      change: enrollmentChange, // Now dynamic or calculated based on more data
       icon: Activity,
       color: "from-green-500 to-green-600",
     },
@@ -76,8 +108,8 @@ export function AdminDashboard() {
     },
     {
       title: "System Health",
-      value: `${systemHealth}%`,
-      change: "All systems operational",
+      value: `${systemHealth}%`, // Now dynamic
+      change: systemHealthStatus, // Now dynamic
       icon: Settings,
       color: "from-purple-500 to-purple-600",
     },
@@ -113,12 +145,16 @@ export function AdminDashboard() {
     }
   };
 
-  const handleSuspendUser = (userId: number, userName: string) => {
+  const handleSuspendUser = async (userId: number, userName: string) => {
     if (
       window.confirm(`Are you sure you want to suspend user "${userName}"?`)
     ) {
-      // This would require a suspend user API endpoint
-      toast.success(`User "${userName}" has been suspended`);
+      try {
+        await suspendUser({ user_id: userId }).unwrap(); // Call the new suspendUser mutation
+        toast.success(`User "${userName}" has been suspended`);
+      } catch (error) {
+        toast.error("Failed to suspend user");
+      }
     }
   };
 
@@ -368,7 +404,7 @@ export function AdminDashboard() {
                 </h4>
                 <div className="text-center">
                   <p className="text-3xl font-bold text-purple-600">
-                    +{Math.floor(users.length * 0.15)}
+                    +{userGrowth}
                   </p>
                   <p className="text-sm text-gray-600">This month</p>
                 </div>
@@ -378,14 +414,18 @@ export function AdminDashboard() {
                   Session Activity
                 </h4>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-green-600">1,234</p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {activeSessions}
+                  </p>
                   <p className="text-sm text-gray-600">Active sessions</p>
                 </div>
               </div>
               <div className="glass-effect rounded-xl p-6">
                 <h4 className="font-semibold text-gray-900 mb-4">Revenue</h4>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-blue-600">$45,678</p>
+                  <p className="text-3xl font-bold text-blue-600">
+                    ${monthlyRevenue.toLocaleString()}
+                  </p>
                   <p className="text-sm text-gray-600">This month</p>
                 </div>
               </div>

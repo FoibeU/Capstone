@@ -56,7 +56,7 @@ export function MentorDashboard() {
   const upcomingSessions = [
     {
       id: "1",
-      mentee: "",
+      mentee: "Sarah Johnson",
       topic: "Career Transition",
       time: "2:00 PM",
       date: "Today",

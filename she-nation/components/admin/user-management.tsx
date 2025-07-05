@@ -35,7 +35,7 @@ export function UserManagement({ userId, onClose }: UserManagementProps) {
       // In a real app, this would fetch user data from the API
       // For now, we'll use mock data
       setFormData({
-        name: "",
+        name: "Sarah Johnson",
         email: "sarah.johnson@email.com",
         role: "mentee",
         status: "active",

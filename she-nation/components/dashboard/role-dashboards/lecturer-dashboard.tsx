@@ -101,7 +101,7 @@ export function LecturerDashboard() {
   ]
 
   const studentProgress = [
-    { name: "", course: "Data Science", progress: 85, lastActive: "2h ago" },
+    { name: "Sarah Johnson", course: "Data Science", progress: 85, lastActive: "2h ago" },
     { name: "Maria Garcia", course: "Python Programming", progress: 92, lastActive: "1d ago" },
     { name: "Aisha Patel", course: "Machine Learning", progress: 67, lastActive: "3h ago" },
   ]
@@ -113,34 +113,34 @@ export function LecturerDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Course Performance */}
             <div className="glass-effect rounded-xl p-6">
-      <h3 className="text-xl font-semibold font-poppins text-gray-900 mb-6">Course Performance</h3>
-      <div className="space-y-4">
-        {courses.map((course) => (
-          <div key={course.id} className="p-4 bg-gray-50 rounded-lg">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="font-medium text-gray-900">{course.title}</h4>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm font-medium text-green-600">{course.revenue}</span>
-                <div className="flex items-center">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
-                  <span className="text-sm font-medium">{course.rating}</span>
-                </div>
+              <h3 className="text-xl font-semibold font-poppins text-gray-900 mb-6">Course Performance</h3>
+              <div className="space-y-4">
+                {courses.map((course) => (
+                  <div key={course.id} className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium text-gray-900">{course.title}</h4>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium text-green-600">{course.revenue}</span>
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
+                          <span className="text-sm font-medium">{course.rating}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                      <span>{course.students} students</span>
+                      <span>{course.completion}% completion</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full"
+                        style={{ width: `${course.completion}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-              <span>{course.students} students</span>
-              <span>{course.completion}% completion</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full"
-                style={{ width: `${course.completion}%` }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
 
             {/* Recent Activity */}
             <div className="glass-effect rounded-xl p-6">

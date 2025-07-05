@@ -259,3 +259,66 @@ class CourseReviewDetailView(APIView):
 
         review.delete()
         return Response({"detail": "Review deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from django.shortcuts import get_object_or_404
+
+from .models import Lesson  # your Lesson model
+from .serializers import LessonSerializer  # serializer for Lesson model
+
+class LessonListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        Lessons = Lesson.objects.all()
+        serializer = LessonSerializer(Lessons, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        if request.user.role not in ['Mentor', 'Expert']:
+            return Response({"detail": "Only Mentors and experts can create Lessons."}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = LessonSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"detail": "Lesson created successfully", "Lesson": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LessonDetailView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, pk):
+        Lesson = get_object_or_404(Lesson, pk=pk)
+        serializer = LessonSerializer(Lesson)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        try:
+            Lesson = Lesson.objects.get(pk=pk)
+        except Lesson.DoesNotExist:
+            return Response({"detail": "Lesson not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Optional: Add permission logic similar to Lesson, e.g. only owner or roles Mentor/Expert can update
+        if request.user.role not in ['Mentor', 'Expert']:
+            return Response({"detail": "Only Mentors and experts can update Lessons."}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = LessonSerializer(Lesson, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"detail": "Lesson updated successfully", "Lesson": serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            Lesson = Lesson.objects.get(pk=pk)
+        except Lesson.DoesNotExist:
+            return Response({"detail": "Lesson not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if request.user.role not in ['Mentor', 'Expert']:
+            return Response({"detail": "Only Mentors and experts can delete Lessons."}, status=status.HTTP_403_FORBIDDEN)
+
+        Lesson.delete()
+        return Response({"detail": "Lesson deleted successfully"}, status=status.HTTP_204_NO_CONTENT)

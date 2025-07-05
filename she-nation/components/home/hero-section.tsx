@@ -34,22 +34,28 @@ export function HeroSection() {
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/30 backdrop-blur-sm border border-white/50 mb-8">
             <Sparkles className="w-4 h-4 text-purple-600 mr-2" />
-            <span className="text-sm font-medium text-gray-700">Empowering 10,000+ Women Worldwide</span>
+            <span className="text-sm font-medium text-gray-700">
+              Empowering 18+ to 30 years old from Burundi
+            </span>
           </div>
 
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold font-poppins mb-6">
-            <span className="block text-gray-900">Empowering Women</span>
-            <span className="block gradient-text">To Become</span>
-            <span className="block text-gray-900 min-h-[1.2em]">{texts[currentText]}</span>
+            <span className="block text-gray-900">Empowering Youth</span>
+            <span className="block gradient-text">From Burundi</span>
+            <span className="block text-gray-900 min-h-[1.2em]">
+              {texts[currentText]}
+            </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Join a thriving community of ambitious women. Access world-class mentorship, cutting-edge skills training,
-            and exclusive career opportunities.
+            Join a vibrant community of motivated young adults. Gain access to
+            mentorship, skills training, and career opportunities tailored for
+            Burundi’s youth aged 18 to 30.
           </p>
 
+          
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Link
@@ -67,5 +73,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

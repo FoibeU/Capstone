@@ -571,16 +571,20 @@ export function CourseContent({ courseId }: CourseContentProps) {
     return activeLessonIndex > 0;
   };
 
-  const getLessonType = (lesson: Lesson) => {
+  const getLessonType = (lesson?: Lesson) => {
+    if (!lesson) return "document";
+
     if (lesson.video_url) {
       return "video";
     }
+
     if (lesson.image_url) {
-      // NEW: Check for image URL
       return "image";
     }
-    return "document"; // Default if neither video nor image
+
+    return "document";
   };
+  
 
   const getIconForType = (type: string) => {
     switch (type) {

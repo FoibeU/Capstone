@@ -18,9 +18,14 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
+        extra_kwargs = {
+            'video_url': {'required': False, 'allow_null': True},
+            'image_url': {'required': False, 'allow_null': True},
+        }
 
     def get_course_title(self, obj):
         return obj.course.title if obj.course else None
+
 
 from django.contrib.auth import get_user_model
 

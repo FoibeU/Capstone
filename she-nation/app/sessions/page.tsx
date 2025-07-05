@@ -1,6 +1,6 @@
 "use client";
 
-import { SessionsPageContent } from "@/components/sessions/sessions-page-content";
+import SessionsPageContent from "@/components/sessions/sessions-page-content";
 import { AuthGuard } from "@/components/auth/auth-guard";
 
 function SessionsPage() {

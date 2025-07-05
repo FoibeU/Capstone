@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Calendar, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,77 +13,62 @@ import {
 } from "@/components/ui/select";
 import { RescheduleModal } from "@/components/sessions/reschedule-modal";
 
-interface Session {
-  id: string;
-  mentee: string;
-  mentor: string;
-  topic: string;
-  date: string;
-  time: string;
-  status: "upcoming" | "completed" | "cancelled";
-}
-
 function SessionsPageContent() {
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
-  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [selectedSession, setSelectedSession] = useState<any>(null);
 
-  // Fetch sessions from API
-  useEffect(() => {
-    const fetchSessions = async () => {
-      try {
-        const res = await fetch("http://localhost:8082/api/sessions/");
-        if (!res.ok) throw new Error("Failed to fetch sessions");
-        const data = await res.json();
-        setSessions(data);
-      } catch (error) {
-        console.error("Error loading sessions:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSessions();
-  }, []);
+  // Mock session data - replace with API data
+  const sessions = [
+    {
+      id: "1",
+      mentee: "Sarah Johnson",
+      mentor: "Dr. Emily Chen",
+      topic: "Career Transition",
+      date: "2024-02-15",
+      time: "2:00 PM",
+      status: "upcoming",
+    },
+    {
+      id: "2",
+      mentee: "Maria Rodriguez",
+      mentor: "David Lee",
+      topic: "Leadership Skills",
+      date: "2024-02-20",
+      time: "10:00 AM",
+      status: "completed",
+    },
+    {
+      id: "3",
+      mentee: "Lisa Chen",
+      mentor: "Dr. Emily Chen",
+      topic: "Work-Life Balance",
+      date: "2024-02-22",
+      time: "3:00 PM",
+      status: "cancelled",
+    },
+  ];
 
   const filteredSessions = sessions.filter((session) => {
     const matchesSearch =
-      session.mentee?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      session.mentor?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      session.topic?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      !statusFilter || statusFilter === "all" || session.status === statusFilter;
+      session.mentee.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      session.mentor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      session.topic.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = !statusFilter || session.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const handleReschedule = (session: Session) => {
+  const handleReschedule = (session: any) => {
     setSelectedSession(session);
     setShowRescheduleModal(true);
   };
 
-  const handleCancel = async (sessionId: string) => {
-    try {
-      const res = await fetch(`http://localhost:8082/api/sessions/${sessionId}/`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Failed to cancel session");
-      setSessions((prev) => prev.filter((s) => s.id !== sessionId));
-    } catch (error) {
-      console.error("Cancel error:", error);
-    }
+  const handleCancel = (sessionId: string) => {
+    // Implement cancel logic
   };
 
   const sessionStatuses = ["upcoming", "completed", "cancelled"];
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Loading sessions...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -127,24 +112,38 @@ function SessionsPageContent() {
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Mentee</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Mentor</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Topic</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Date</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Time</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Status</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-900">Actions</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Mentee
+                </th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Mentor
+                </th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Topic
+                </th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Date
+                </th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Time
+                </th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Status
+                </th>
+                <th className="text-left py-4 px-6 font-medium text-gray-900">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredSessions.map((session) => (
                 <tr key={session.id} className="hover:bg-gray-50">
-                  <td className="py-4 px-6">{session.mentee || "-"}</td>
+                  <td className="py-4 px-6">{session.mentee}</td>
                   <td className="py-4 px-6">{session.mentor}</td>
                   <td className="py-4 px-6">{session.topic}</td>
                   <td className="py-4 px-6">{session.date}</td>
                   <td className="py-4 px-6">{session.time}</td>
-                  <td className="py-4 px-6 capitalize">{session.status}</td>
+                  <td className="py-4 px-6">{session.status}</td>
                   <td className="py-4 px-6">
                     <div className="flex items-center space-x-2">
                       <Button
@@ -172,7 +171,7 @@ function SessionsPageContent() {
       </div>
 
       {/* Reschedule Modal */}
-      {showRescheduleModal && selectedSession && (
+      {showRescheduleModal && (
         <RescheduleModal
           session={selectedSession}
           onClose={() => setShowRescheduleModal(false)}

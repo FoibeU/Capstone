@@ -92,76 +92,8 @@ export function ProfileHeader() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-8 border-t border-gray-200">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-purple-600">
-            {user.role === "mentor" ? "45" : user.role === "lecturer" ? "12" : user.role === "company" ? "23" : "8"}
-          </div>
-          <div className="text-sm text-gray-600">
-            {user.role === "mentor"
-              ? "Mentees"
-              : user.role === "lecturer"
-                ? "Courses"
-                : user.role === "company"
-                  ? "Job Posts"
-                  : "Courses Completed"}
-          </div>
+      
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-pink-600">
-            {user.role === "mentor"
-              ? "4.9"
-              : user.role === "lecturer"
-                ? "4.8"
-                : user.role === "company"
-                  ? "4.7"
-                  : "156"}
-          </div>
-          <div className="text-sm text-gray-600">
-            {user.role === "mentor"
-              ? "Rating"
-              : user.role === "lecturer"
-                ? "Rating"
-                : user.role === "company"
-                  ? "Rating"
-                  : "Forum Posts"}
-          </div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-indigo-600">
-            {user.role === "mentor"
-              ? "120"
-              : user.role === "lecturer"
-                ? "1,234"
-                : user.role === "company"
-                  ? "89"
-                  : "23"}
-          </div>
-          <div className="text-sm text-gray-600">
-            {user.role === "mentor"
-              ? "Sessions"
-              : user.role === "lecturer"
-                ? "Students"
-                : user.role === "company"
-                  ? "Hires"
-                  : "Certificates"}
-          </div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-green-600">
-            {user.role === "mentor" ? "2.5" : user.role === "lecturer" ? "3.2" : user.role === "company" ? "1.8" : "67"}
-          </div>
-          <div className="text-sm text-gray-600">
-            {user.role === "mentor"
-              ? "Years Experience"
-              : user.role === "lecturer"
-                ? "Years Teaching"
-                : user.role === "company"
-                  ? "Years Active"
-                  : "Skills Learned"}
-          </div>
-        </div>
-      </div>
-    </div>
+     
   )
 }

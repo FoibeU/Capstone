@@ -49,27 +49,9 @@ export function ForumHeader() {
           </div>
         </div>
 
-        
-        {/*<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-          <div className="glass-effect rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-purple-600">1,234</div>
-            <div className="text-sm text-gray-600">Total Discussions</div>
-          </div>
-          <div className="glass-effect rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-pink-600">5,678</div>
-            <div className="text-sm text-gray-600">Active Members</div>
-          </div>
-          <div className="glass-effect rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-indigo-600">89</div>
-            <div className="text-sm text-gray-600">Today's Posts</div>
-          </div>
-          <div className="glass-effect rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">456</div>
-            <div className="text-sm text-gray-600">Solved Questions</div>
-          </div>
-        </div>*/}
-      </div>
+       
 
+      </div>
       {showCreatePost && <CreatePostModal onClose={() => setShowCreatePost(false)} />}
     </>
   )

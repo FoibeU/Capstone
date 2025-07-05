@@ -5,35 +5,35 @@ import { Star, Quote } from "lucide-react"
 
 const testimonials = [
   {
-    name: "",
-    role: "",
-    image: "",
-    content:
-      "",
-    rating: 5,
-  },
-  {
-    name: "",
-    role: "",
+    name: "Sarah Chen",
+    role: "Software Engineer at Google",
     image: "/placeholder.svg?height=80&width=80",
     content:
-      "",
+      "SheNation transformed my career. The mentorship program connected me with amazing leaders who helped me land my dream job at Google.",
     rating: 5,
   },
   {
-    name: "",
-    role: "",
-    image: "",
+    name: "Maria Rodriguez",
+    role: "Founder & CEO, TechStart",
+    image: "/placeholder.svg?height=80&width=80",
     content:
-      "",
+      "The entrepreneurship courses and community support gave me the confidence and skills to start my own company. Now we're valued at $10M!",
     rating: 5,
   },
   {
-    name: "",
-    role: "",
-    image: "",
+    name: "Aisha Patel",
+    role: "Data Scientist at Microsoft",
+    image: "/placeholder.svg?height=80&width=80",
     content:
-      "",
+      "The data science track was incredible. The hands-on projects and expert guidance helped me transition from marketing to tech seamlessly.",
+    rating: 5,
+  },
+  {
+    name: "Jessica Wong",
+    role: "Product Manager at Spotify",
+    image: "/placeholder.svg?height=80&width=80",
+    content:
+      "SheNation's job board and networking events opened doors I never knew existed. The community here is truly supportive and empowering.",
     rating: 5,
   },
 ]

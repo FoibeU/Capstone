@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 interface Mentor {
   id: string
@@ -46,8 +46,76 @@ interface MentorshipState {
 }
 
 const initialState: MentorshipState = {
-  mentors: [],
-  sessions: [],
+  mentors: [
+    {
+      id: "1",
+      name: "Dr. Sarah Johnson",
+      avatar: "/placeholder.svg?height=100&width=100",
+      experience: "Senior Product Manager at Google",
+      rating: 4.9,
+      price: 150,
+      expertise: ["Product Management", "Leadership", "Strategy"],
+      availability: ["Monday 2-4 PM", "Wednesday 10-12 PM", "Friday 3-5 PM"],
+      bio: "Experienced product leader with 10+ years at top tech companies.",
+      location: "San Francisco, CA",
+      languages: ["English", "Spanish"],
+      responseTime: "2 hours",
+    },
+    {
+      id: "2",
+      name: "Maria Rodriguez",
+      avatar: "/placeholder.svg?height=100&width=100",
+      experience: "VP of Engineering at Microsoft",
+      rating: 4.8,
+      price: 200,
+      expertise: ["Engineering Management", "Technical Leadership", "Career Growth"],
+      availability: ["Tuesday 1-3 PM", "Thursday 9-11 AM", "Saturday 2-4 PM"],
+      bio: "Engineering leader passionate about mentoring women in tech.",
+      location: "Seattle, WA",
+      languages: ["English", "Portuguese"],
+      responseTime: "1 hour",
+    },
+    {
+      id: "3",
+      name: "Dr. Aisha Patel",
+      avatar: "/placeholder.svg?height=100&width=100",
+      experience: "Data Science Director at Netflix",
+      rating: 4.9,
+      price: 175,
+      expertise: ["Data Science", "Machine Learning", "Analytics"],
+      availability: ["Monday 10-12 PM", "Wednesday 2-4 PM", "Friday 1-3 PM"],
+      bio: "Data science expert with expertise in ML and AI applications.",
+      location: "Los Angeles, CA",
+      languages: ["English", "Hindi"],
+      responseTime: "3 hours",
+    },
+  ],
+  sessions: [
+    {
+      id: "1",
+      mentorId: "1",
+      mentorName: "Dr. Sarah Johnson",
+      mentorAvatar: "/placeholder.svg?height=40&width=40",
+      topic: "Product Strategy Discussion",
+      date: "2024-01-25",
+      time: "2:00 PM",
+      duration: 60,
+      status: "scheduled",
+      meetingLink: "https://meet.google.com/abc-defg-hij",
+    },
+    {
+      id: "2",
+      mentorId: "2",
+      mentorName: "Maria Rodriguez",
+      mentorAvatar: "/placeholder.svg?height=40&width=40",
+      topic: "Career Growth Planning",
+      date: "2024-01-20",
+      time: "1:00 PM",
+      duration: 45,
+      status: "completed",
+      notes: "Great session on career planning and next steps.",
+    },
+  ],
   selectedMentor: null,
   filters: {
     expertise: [],
@@ -61,22 +129,13 @@ const initialState: MentorshipState = {
   error: null,
 }
 
-export const fetchMentors = createAsyncThunk("mentorship/fetchMentors", async () => {
-  const res = await fetch("http://localhost:8082/api/mentors")
-  if (!res.ok) throw new Error("Failed to fetch mentors")
-  return await res.json()
-})
-
-export const fetchSessions = createAsyncThunk("mentorship/fetchSessions", async () => {
-  const res = await fetch("http://localhost:8082/api/sessions")
-  if (!res.ok) throw new Error("Failed to fetch sessions")
-  return await res.json()
-})
-
 const mentorshipSlice = createSlice({
   name: "mentorship",
   initialState,
   reducers: {
+    setMentors: (state, action: PayloadAction<Mentor[]>) => {
+      state.mentors = action.payload
+    },
     selectMentor: (state, action: PayloadAction<Mentor>) => {
       state.selectedMentor = action.payload
     },
@@ -130,27 +189,10 @@ const mentorshipSlice = createSlice({
       state.error = action.payload
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchMentors.pending, (state) => {
-        state.loading = true
-        state.error = null
-      })
-      .addCase(fetchMentors.fulfilled, (state, action) => {
-        state.loading = false
-        state.mentors = action.payload
-      })
-      .addCase(fetchMentors.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.error.message || "Error fetching mentors"
-      })
-      .addCase(fetchSessions.fulfilled, (state, action) => {
-        state.sessions = action.payload
-      })
-  },
 })
 
 export const {
+  setMentors,
   selectMentor,
   bookSession,
   updateSession,

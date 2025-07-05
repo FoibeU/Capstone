@@ -2,7 +2,8 @@
 
 import type React from "react"
 import { useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+
 import { useAppSelector } from "@/lib/hooks"
 import { LoadingSpinner } from "@/components/ui/loading-spinner"
 import { canAccessResource } from "@/lib/auth/auth-service"

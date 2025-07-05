@@ -1,4 +1,4 @@
-//import { dummyUsers, getUserByEmail } from "@/lib/data/dummy-users"
+import { dummyUsers, getUserByEmail } from "@/lib/data/dummy-users"
 
 export interface LoginCredentials {
   email: string

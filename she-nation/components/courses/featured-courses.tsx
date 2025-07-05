@@ -1,126 +1,95 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { MentorGrid } from "@/components/mentorship/mentor-grid";
+import { Star, Users, Clock } from "lucide-react"
+import Link from "next/link"
 
-// Define the shape of mentor data from the API
-interface Mentor {
-  id: string;
-  name: string;
-  title: string;
-  company: string;
-  category: string;
-  rating: number;
-  sessions: number;
-  avatar: string;
-}
+const featuredCourses = [
+  {
+    id: "featured-1",
+    title: "Women in Leadership: Executive Presence",
+    instructor: "Dr. Emily Chen",
+    image: "/placeholder.svg?height=200&width=350",
+    rating: 4.9,
+    students: 2500,
+    duration: "6 weeks",
+    price: "Free",
+    badge: "Most Popular",
+  },
+  {
+    id: "featured-2",
+    title: "AI & Machine Learning Fundamentals",
+    instructor: "Aisha Patel",
+    image: "/placeholder.svg?height=200&width=350",
+    rating: 4.8,
+    students: 1800,
+    duration: "8 weeks",
+    price: "$199",
+    badge: "New",
+  },
+  {
+    id: "featured-3",
+    title: "Startup Fundraising Masterclass",
+    instructor: "Maria Rodriguez",
+    image: "/placeholder.svg?height=200&width=350",
+    rating: 4.9,
+    students: 1200,
+    duration: "4 weeks",
+    price: "$299",
+    badge: "Expert Level",
+  },
+]
 
-function MentorshipPage() {
-  const [mentors, setMentors] = useState<Mentor[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-
-  // Fetch mentors from the backend
-  useEffect(() => {
-    async function fetchMentors() {
-      try {
-        const response = await fetch("http://localhost:8082/api/mentors/");
-        if (!response.ok) throw new Error("Failed to fetch mentors");
-        const data: Mentor[] = await response.json();
-        setMentors(data);
-      } catch (error) {
-        console.error("Error fetching mentors:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchMentors();
-  }, []);
-
-  // Unique categories for filtering
-  const categories = Array.from(new Set(mentors.map((m) => m.category))).sort();
-
-  // Filtered mentors based on search and category
-  const filteredMentors = mentors.filter((mentor) => {
-    const searchMatch =
-      mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      mentor.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      mentor.company.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const categoryMatch =
-      !categoryFilter || mentor.category === categoryFilter;
-
-    return searchMatch && categoryMatch;
-  });
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-lg">Loading mentors...</p>
-      </div>
-    );
-  }
-
+export function FeaturedCourses() {
   return (
-    <div className="min-h-screen bg-gray-50 py-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Find a Mentor
-          </h1>
-          <p className="text-gray-600">
-            Connect with experienced professionals for guidance and support.
-          </p>
-        </div>
-
-        {/* Search and Category Filters */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Search Input */}
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                placeholder="Search mentors…"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+    <div className="mb-12">
+      <h2 className="text-2xl font-bold font-poppins text-gray-900 mb-6">Featured Courses</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredCourses.map((course) => (
+          <Link key={course.id} href={`/courses/${course.id}`}>
+            <div className="group glass-effect rounded-xl overflow-hidden hover-lift transition-all duration-300">
+              <div className="relative">
+                <img
+                  src={course.image || "/placeholder.svg"}
+                  alt={course.title}
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-medium rounded-full">
+                    {course.badge}
+                  </span>
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-900 text-sm font-bold rounded-full">
+                    {course.price}
+                  </span>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-semibold text-gray-900 text-lg mb-2 group-hover:text-purple-600 transition-colors">
+                  {course.title}
+                </h3>
+                <p className="text-gray-600 text-sm mb-4">by {course.instructor}</p>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
+                      {course.rating}
+                    </div>
+                    <div className="flex items-center">
+                      <Users className="w-4 h-4 mr-1" />
+                      {course.students.toLocaleString()}
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      {course.duration}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            {/* Category Filter */}
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Mentor Display Grid */}
-        <MentorGrid mentors={filteredMentors} />
+          </Link>
+        ))}
       </div>
     </div>
-  );
+  )
 }
-
-export default MentorshipPage;

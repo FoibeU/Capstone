@@ -67,8 +67,8 @@ export function CreateLessonForm({
       await createLesson({
         course: courseId,
         title,
-        video_url: videoUrl || null, // Send null if empty string
-        image_url: imageUrl || null, // Send null if empty string
+        video_url: videoUrl || null, 
+        image_url: imageUrl || null, 
         duration_minutes: durationMinutes,
         order,
       }).unwrap();

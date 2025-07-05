@@ -15,6 +15,8 @@ urlpatterns = [
     # Lessons
     path('lessons/', LessonListCreateView.as_view(), name='lesson-list-create'),
     path('lessons/<int:pk>/', LessonDetailView.as_view(), name='lesson-detail'),
+    path('sessions/', LessonListCreateView.as_view(), name='session-list-create'),
+    path('sessions/<int:pk>/', LessonDetailView.as_view(), name='session-detail'),
 
     # Enrollments
     path('enrollments/', EnrollmentListCreateView.as_view(), name='enrollment-list-create'),
