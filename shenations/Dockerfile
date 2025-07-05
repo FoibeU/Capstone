@@ -17,12 +17,9 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-<<<<<<< HEAD
-=======
 # Copy wait script and app
 #COPY wait-for-db.sh /wait-for-db.sh
 # RUN chmod +x /wait-for-db.sh
->>>>>>> 355072aa099d743129ad43e31b9e7ea4ed68e942
 
 COPY . .
 
@@ -31,11 +28,6 @@ RUN mkdir -p /app/static
 
 EXPOSE 8082
 
-<<<<<<< HEAD
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8082", "shenations.wsgi:application"]
-=======
 # Use wait-for-db before launching Gunicorn
 #ENTRYPOINT ["/wait-for-db.sh"]
 CMD ["gunicorn", "--bind", "0.0.0.0:8082", "shenations.wsgi:application"]
->>>>>>> 355072aa099d743129ad43e31b9e7ea4ed68e942
