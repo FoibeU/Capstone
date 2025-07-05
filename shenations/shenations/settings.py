@@ -1,16 +1,18 @@
 import os
 from datetime import timedelta
-
+from decouple import config # Make sure decouple is imported if you're using it for SIGNING_KEY
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '6+_uqb@a-io2-iqyuy--bwcs$boaj#l0tf1o_5%zjqi5u$02!)'
-from decouple import config 
-DEBUG = True
+SECRET_KEY = '6+_uqb@a-io2-iqyuy--bwcs$boaj#l0tf1o_5%zjqi5u$02!)' # Consider moving this to .env
+DEBUG = True # Set to False in production
 
-ALLOWED_HOSTS = []
+# Update ALLOWED_HOSTS to include your Render domain
+ALLOWED_HOSTS = ['capstone-o3oh.onrender.com', 'localhost', '127.0.0.1'] 
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,6 +26,8 @@ INSTALLED_APPS = [
     'courses',
     'corsheaders',
     'applications',
+    # Removed 'capstone-o3oh.onrender.com', 'localhost', '127.0.0.1' from INSTALLED_APPS
+    # as they don't belong here. They belong in ALLOWED_HOSTS.
 ]
 
 MIDDLEWARE = [
@@ -42,14 +46,14 @@ ROOT_URLCONF = 'shenations.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [], # This can be empty if you're using 'APP_DIRS': True
+        'APP_DIRS': True, # This tells Django to look for templates in 'templates' subdirectories of your apps
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages', # <--- THIS LINE IS CRUCIAL
             ],
         },
     },
@@ -78,7 +82,7 @@ DATABASES = {
     }
 }
 
-SIGNING_KEY = config('SIGNING_KEY')
+SIGNING_KEY = config('SIGNING_KEY') # Ensure this is correctly fetched
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=365),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
@@ -125,10 +129,11 @@ AUTH_USER_MODEL = 'accounts.User'
 
 STATIC_URL = '/static/'
 
-CORS_ALLOW_ALL_ORIGINS = True 
+CORS_ALLOW_ALL_ORIGINS = True # Consider setting this to False in production and explicitly listing allowed origins
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8082", 
     "http://92.113.31.238",
+    "https://capstone-o3oh.onrender.com", # Added your Render domain here
 ]
