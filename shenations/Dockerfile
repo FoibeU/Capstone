@@ -1,3 +1,4 @@
+# ---------- Dockerfile ----------
 FROM python:3.10-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -5,31 +6,25 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Install system dependencies
+# System deps
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
-
-# Install Python dependencies
+# Python deps
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copy wait script and app
-#COPY wait-for-db.sh /wait-for-db.sh
-# RUN chmod +x /wait-for-db.sh
-
+# Project
 COPY . .
 
-# Ensure static directory exists
+# Static dir for collectstatic
 RUN mkdir -p /app/static
 
-EXPOSE 8082
+EXPOSE 8082 
+  # doc-only—for local docker run -p 8082:8082
 
-# Use wait-for-db before launching Gunicorn
-#ENTRYPOINT ["/wait-for-db.sh"]
-# CMD ["gunicorn", "--bind", "0.0.0.0:8082", "shenations.wsgi:application"]
-CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "shenations.wsgi:application"]
-
+# Gunicorn binds to $PORT on Render, falls back to 8082 locally
+CMD ["sh", "-c", "gunicorn shenations.wsgi:application --bind 0.0.0.0:${PORT:-8082}"]
