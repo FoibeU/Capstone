@@ -30,4 +30,6 @@ EXPOSE 8082
 
 # Use wait-for-db before launching Gunicorn
 #ENTRYPOINT ["/wait-for-db.sh"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8082", "shenations.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8082", "shenations.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "shenations.wsgi:application"]
+
