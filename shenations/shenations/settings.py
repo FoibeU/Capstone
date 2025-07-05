@@ -129,11 +129,12 @@ AUTH_USER_MODEL = 'accounts.User'
 
 STATIC_URL = '/static/'
 
-CORS_ALLOW_ALL_ORIGINS = True # Consider setting this to False in production and explicitly listing allowed origins
+CORS_ALLOW_ALL_ORIGINS = True # Consider sexplicitly listing allowed origins
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8082", 
     "http://92.113.31.238",
-    "https://capstone-o3oh.onrender.com", # Added your Render domain here
+    "https://capstone-o3oh.onrender.com", 
 ]
+ALLOWED_HOSTS = ['*']
