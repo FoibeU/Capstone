@@ -17,11 +17,6 @@ With these four roles working in concert, SheNation offers a holistic environmen
 
 
 
-## Updated Scope
-
-Following a series of consultations with the project supervisor, the initial project scope was refined. Initially designed for a broad range of women users, the platform’s core user base has been narrowed down to focus specifically on **women aged 18 to 30**. This decision was made to better align the design and functionality of the platform with the specific needs and usage patterns of this demographic, thereby enhancing relevance and usability.
-
-
 
 ## Technical Overview
 
@@ -98,9 +93,7 @@ Live deployment of the SheNation platform is available at:
 
 This hosted version allows users and stakeholders to interact with the platform in a real-time setting and test all core functionalities.
 
-### Demo Video
-
-A demonstration video of approximately five minutes has been created to showcase the main features of SheNation. This video deliberately avoids focusing on user registration and login functionality, instead highlighting the major features such as course creation, lesson management like learning, mentee enrollment, achievement tracking, and opportunity applications.
+### Demo Video link
 
 https://youtu.be/5LxqeZTtoak 
 
