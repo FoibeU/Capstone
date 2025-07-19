@@ -138,3 +138,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://capstone-o3oh.onrender.com", 
 ]
 ALLOWED_HOSTS = ['*']
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'          
+EMAIL_PORT = 587                   
+EMAIL_USE_TLS = True              
+EMAIL_HOST_USER = 'foibe.uwizeye@gmail.com'   
+EMAIL_HOST_PASSWORD = 'bhwkigxymyfezsyl'       
+DEFAULT_FROM_EMAIL = 'foibe.uwizeye@gmail.com'

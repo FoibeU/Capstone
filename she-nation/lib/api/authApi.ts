@@ -1,4 +1,4 @@
-import { baseApi } from "./baseApi"
+import { baseApi } from "./baseApi";
 import type {
   RegisterPayload,
   RegisterResponse,
@@ -7,11 +7,14 @@ import type {
   AllUsersResponse,
   VerifyUserPayload,
   VerifyUserResponse,
+  DeleteUserResponse,
+  UpdateUserStatusPayload,
+  UpdateUserStatusResponse,
   ProfilePayload,
   ProfileResponse,
   UpdateProfilePayload,
   UpdateProfileResponse,
-} from "../types/api"
+} from "../types/api";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -44,6 +47,24 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    deleteUser: builder.mutation<DeleteUserResponse, number>({
+      query: (userId) => ({
+        url: `/auth/user/${userId}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["User"],
+    }),
+    updateUserStatus: builder.mutation<
+      UpdateUserStatusResponse,
+      UpdateUserStatusPayload
+    >({
+      query: (payload) => ({
+        url: `/auth/user/${payload.user_id}/`,
+        method: "PUT",
+        body: { is_active: payload.is_active },
+      }),
+      invalidatesTags: ["User"],
+    }),
     // Profile endpoints
     createProfile: builder.mutation<ProfileResponse, ProfilePayload>({
       query: (profile) => ({
@@ -72,6 +93,8 @@ export const {
   useLoginMutation,
   useGetAllUsersQuery,
   useVerifyUserMutation,
+  useDeleteUserMutation,
+  useUpdateUserStatusMutation,
   useCreateProfileMutation,
   useUpdateProfileMutation,
-} = authApi
+} = authApi;

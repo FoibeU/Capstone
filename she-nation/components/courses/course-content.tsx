@@ -805,45 +805,64 @@ export function CourseContent({ courseId }: CourseContentProps) {
                 </div>
 
                 {/* Video Player or Image Display Area */}
-                <div className="bg-gray-900 rounded-lg aspect-video flex items-center justify-center mb-6 overflow-hidden">
-                  {currentLesson?.video_url ? (
-                    // Video Player
-                    <video
-                      controls
-                      src={currentLesson.video_url}
-                      className="w-full h-full object-cover"
-                      poster={currentLesson.image_url || undefined} // Use image as poster if available
-                    >
-                      Your browser does not support the video tag.
-                    </video>
-                  ) : currentLesson?.image_url ? (
-                    // Image Display
-                    <img
-                      src={currentLesson.image_url}
-                      alt={currentLesson.title}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    // Generic Content Display Area
-                    <div className="text-center text-white">
-                      <Play className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                      <p className="text-lg">Content Display Area</p>
-                      <p className="text-sm opacity-75">
-                        {currentLesson?.title}
-                        <br />
-                        {getLessonType(currentLesson) === "document" &&
-                          "View Document / Quiz"}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                {currentLesson?.video_url ? (
+                  (() => {
+                    const getYouTubeVideoId = (url: string) => {
+                      const regExp =
+                        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                      const match = url.match(regExp);
+                      return match && match[2].length === 11 ? match[2] : null;
+                    };
 
-               
+                    const videoId = getYouTubeVideoId(currentLesson.video_url);
+                    if (videoId) {
+                      return (
+                        <iframe
+                          width="100%"
+                          height="360" // <-- fixed height added here
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={currentLesson.title}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="rounded-lg"
+                        />
+                      );
+                    } else {
+                      // fallback to normal video player for other video URLs
+                      return (
+                        <video
+                          controls
+                          src={currentLesson.video_url}
+                          className="w-full h-full object-cover"
+                          poster={currentLesson.image_url || undefined}
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      );
+                    }
+                  })()
+                ) : currentLesson?.image_url ? (
+                  <img
+                    src={currentLesson.image_url}
+                    alt={currentLesson.title}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="text-center text-white">
+                    <Play className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <p className="text-lg">Content Display Area</p>
+                    <p className="text-sm opacity-75">
+                      {currentLesson?.title}
+                      <br />
+                      {getLessonType(currentLesson) === "document" &&
+                        "View Document / Quiz"}
+                    </p>
+                  </div>
+                )}
 
                 {/* Navigation and Actions */}
                 <div className="flex items-center justify-between">
-                
-
                   <div className="flex space-x-3">
                     {currentLesson &&
                       !lessonCompletionStatus[`${currentLesson.id}`] &&
@@ -855,10 +874,7 @@ export function CourseContent({ courseId }: CourseContentProps) {
                           Mark as Complete
                         </button>
                       )}
-                  
                   </div>
-
-                  
                 </div>
               </div>
             ) : (

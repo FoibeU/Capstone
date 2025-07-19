@@ -1,5 +1,11 @@
 import { baseApi } from "./baseApi";
-import type { Booking, BookingRequest, BookingResponse } from "../types/api";
+import type {
+  Booking,
+  BookingRequest,
+  BookingResponse,
+  BookingUpdatePayload,
+  BookingUpdateResponse,
+} from "../types/api";
 
 export const bookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -56,7 +62,42 @@ export const bookingApi = baseApi.injectEndpoints({
       },
       providesTags: ["Bookings"],
     }),
+    getMenteeBookings: builder.query<Booking[], void>({
+      query: () => {
+        console.log("API: Fetching mentee bookings");
+        return "/auth/mentee/bookings/";
+      },
+      transformResponse: (response: Booking[]) => {
+        console.log("API: Raw mentee bookings response:", response);
+        return response;
+      },
+      providesTags: ["Bookings"],
+    }),
+    updateBookingStatus: builder.mutation<
+      BookingUpdateResponse,
+      { id: number; status: BookingUpdatePayload }
+    >({
+      query: ({ id, status }) => ({
+        url: `/auth/bookings/${id}/`,
+        method: "PUT",
+        body: status,
+      }),
+      invalidatesTags: ["Bookings"],
+    }),
+    deleteBooking: builder.mutation<{ detail: string }, number>({
+      query: (id) => ({
+        url: `/auth/bookings/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Bookings"],
+    }),
   }),
 });
 
-export const { useBookMentorMutation, useGetMentorBookingsQuery } = bookingApi;
+export const {
+  useBookMentorMutation,
+  useGetMentorBookingsQuery,
+  useGetMenteeBookingsQuery,
+  useUpdateBookingStatusMutation,
+  useDeleteBookingMutation,
+} = bookingApi;

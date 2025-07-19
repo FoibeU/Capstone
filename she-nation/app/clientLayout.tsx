@@ -6,6 +6,7 @@ import { Navigation } from "@/components/layout/navigation";
 import { RoleBasedRedirect } from "@/components/auth/role-redirect";
 import { useAppDispatch } from "@/lib/hooks";
 import { initializeAuth } from "@/lib/slices/authSlice";
+import { useRealtimeNotifications } from "@/components/notifications/notification-bell";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -15,6 +16,9 @@ export default function AppContent({
   children: React.ReactNode;
 }) {
   const dispatch = useAppDispatch();
+
+  // Enable real-time notifications
+  useRealtimeNotifications();
 
   useEffect(() => {
     // Initialize auth state from cookies

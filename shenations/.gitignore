@@ -10,9 +10,9 @@ __pycache__/
 *.pyc
 
 # Ignore local environment files
-.env
+
 *.env
-.env.*
+
 
 # === Virtualenv ===
 venv/

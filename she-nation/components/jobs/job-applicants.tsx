@@ -9,6 +9,7 @@ import { useGetMyOpportunityApplicationsQuery } from "@/lib/api/opportunitiesApi
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { formatDistanceToNow } from "date-fns";
 import type { Application } from "@/lib/types/api";
+import { useState } from "react";
 
 export function JobApplicants() {
   const {
@@ -18,6 +19,8 @@ export function JobApplicants() {
   } = useGetMyOpportunityApplicationsQuery();
 
   const applications = response?.applications ?? [];
+
+  const [processingIds, setProcessingIds] = useState<number[]>([]);
 
   if (isLoading) {
     return (
@@ -77,6 +80,37 @@ export function JobApplicants() {
     return acc;
   }, {} as Record<number, Application[]>);
 
+  // Example handlers to approve or deny applications
+  const handleApprove = async (applicationId: number) => {
+    setProcessingIds((ids) => [...ids, applicationId]);
+    try {
+      // Call your API to approve the application
+      // await api.approveApplication(applicationId);
+      alert(`Approved application ${applicationId}`);
+      // Optionally refresh data here
+    } catch (err) {
+      console.error(err);
+      alert("Failed to approve application");
+    } finally {
+      setProcessingIds((ids) => ids.filter((id) => id !== applicationId));
+    }
+  };
+
+  const handleDeny = async (applicationId: number) => {
+    setProcessingIds((ids) => [...ids, applicationId]);
+    try {
+      // Call your API to deny the application
+      // await api.denyApplication(applicationId);
+      alert(`Denied application ${applicationId}`);
+      // Optionally refresh data here
+    } catch (err) {
+      console.error(err);
+      alert("Failed to deny application");
+    } finally {
+      setProcessingIds((ids) => ids.filter((id) => id !== applicationId));
+    }
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -123,7 +157,9 @@ export function JobApplicants() {
                             Applied{" "}
                             {formatDistanceToNow(
                               new Date(application.date_applied),
-                              { addSuffix: true }
+                              {
+                                addSuffix: true,
+                              }
                             )}
                           </p>
                         </div>
@@ -182,7 +218,28 @@ export function JobApplicants() {
                         Last updated:{" "}
                         {new Date(application.updated_at).toLocaleDateString()}
                       </div>
-                      
+
+                      {/* Buttons for Approve / Deny */}
+                      {application.status.toLowerCase() === "pending" && (
+                        <div className="flex space-x-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={processingIds.includes(application.id)}
+                            onClick={() => handleApprove(application.id)}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            disabled={processingIds.includes(application.id)}
+                            onClick={() => handleDeny(application.id)}
+                          >
+                            Deny
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

@@ -18,12 +18,12 @@ import {
   BookOpen,
   User2,
   Users,
-  Settings,
   UserCheck,
+  Settings,
 } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { logout } from "@/lib/slices/authSlice";
-import { NotificationDropdown } from "@/components/notifications/notification-dropdown";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 // Navigation items with role-based access
 const getNavigationItems = (
@@ -56,13 +56,13 @@ const getNavigationItems = (
       name: "Mentorship",
       href: "/mentorship",
       icon: User2,
-      roles: [ "Mentor", "mentee"],
+      roles: ["Mentor", "mentee"],
     },
     {
       name: "Bookings",
       href: "/bookings",
       icon: Calendar,
-      roles: [ "mentee"],
+      roles: ["mentee"],
     },
     {
       name: "Jobs",
@@ -70,7 +70,18 @@ const getNavigationItems = (
       icon: Building2,
       roles: ["admin", "mentee", "company"],
     },
-
+    {
+      name: "Booking Requests",
+      href: "/mentor-bookings",
+      icon: UserCheck,
+      roles: ["Mentor", "admin"],
+    },
+    {
+      name: "Analytics",
+      href: "/mentor-analytics",
+      icon: BarChart3,
+      roles: ["Mentor", "admin"],
+    },
     {
       name: "Users",
       href: "/users",
@@ -167,24 +178,7 @@ export function Navigation() {
                 </button>
 
                 {/* Notifications */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowNotifications(!showNotifications)}
-                    className="p-2 text-gray-600 hover:text-purple-600 transition-colors relative"
-                  >
-                    <Bell className="w-5 h-5" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        {unreadCount}
-                      </span>
-                    )}
-                  </button>
-                  {showNotifications && (
-                    <NotificationDropdown
-                      onClose={() => setShowNotifications(false)}
-                    />
-                  )}
-                </div>
+                <NotificationBell />
 
                 {/* Profile */}
                 <div className="relative">
@@ -192,11 +186,9 @@ export function Navigation() {
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                     className="flex items-center space-x-2 p-2 rounded-lg hover:bg-white/50 transition-colors"
                   >
-                    <img
-                      src={user?.avatar || "/placeholder.svg"}
-                      alt={user?.name}
-                      className="w-8 h-8 rounded-full"
-                    />
+                    <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                      <User2 className="w-4 h-4 text-purple-600" />
+                    </div>
                     <div className="hidden sm:block text-left">
                       <div className="font-medium text-gray-700">
                         {user?.name}
@@ -240,8 +232,7 @@ export function Navigation() {
                           <UserCheck className="w-4 h-4 mr-2" />
                           Profile Settings
                         </Link>
-                    
-                      
+
                         <button
                           onClick={handleLogout}
                           className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors flex items-center"

@@ -9,6 +9,8 @@ import {
   Edit,
   Trash2,
   Shield,
+  UserX,
+  UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetAllUsersQuery, useVerifyUserMutation } from "@/lib/api/authApi";
+import {
+  useGetAllUsersQuery,
+  useVerifyUserMutation,
+  useDeleteUserMutation,
+  useUpdateUserStatusMutation,
+} from "@/lib/api/authApi";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { AuthGuard } from "@/components/auth/auth-guard";
 import toast from "react-hot-toast";
@@ -31,6 +38,8 @@ function AdminUsersPage() {
 
   const { data: users = [], isLoading, error } = useGetAllUsersQuery();
   const [verifyUser] = useVerifyUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
+  const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
@@ -50,6 +59,48 @@ function AdminUsersPage() {
       toast.success(`User "${userName}" has been verified`);
     } catch (error) {
       toast.error("Failed to verify user");
+    }
+  };
+
+  const handleDeleteUser = async (userId: number, userName: string) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete user "${userName}"? This action cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await deleteUser(userId).unwrap();
+      toast.success(`User "${userName}" has been deleted`);
+    } catch (error) {
+      toast.error("Failed to delete user");
+    }
+  };
+
+  const handleToggleUserStatus = async (
+    userId: number,
+    userName: string,
+    currentStatus: boolean
+  ) => {
+    const action = currentStatus ? "deactivate" : "activate";
+    if (!confirm(`Are you sure you want to ${action} user "${userName}"?`)) {
+      return;
+    }
+
+    try {
+      await updateUserStatus({
+        user_id: userId,
+        is_active: !currentStatus,
+      }).unwrap();
+      toast.success(
+        `User "${userName}" has been ${
+          currentStatus ? "deactivated" : "activated"
+        }`
+      );
+    } catch (error) {
+      toast.error(`Failed to ${action} user`);
     }
   };
 
@@ -146,7 +197,7 @@ function AdminUsersPage() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Mentors</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {users.filter((u) => u.role === "mentor").length}
+                  {users.filter((u) => u.role === "Mentor").length}
                 </p>
               </div>
             </div>
@@ -286,8 +337,43 @@ function AdminUsersPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleVerifyUser(user.id, user.name)}
+                          title="Verify User"
                         >
                           <Shield className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() =>
+                            handleToggleUserStatus(
+                              user.id,
+                              user.name,
+                              user.is_active
+                            )
+                          }
+                          title={
+                            user.is_active ? "Deactivate User" : "Activate User"
+                          }
+                          className={
+                            user.is_active
+                              ? "text-orange-600 hover:text-orange-700"
+                              : "text-green-600 hover:text-green-700"
+                          }
+                        >
+                          {user.is_active ? (
+                            <UserX className="w-4 h-4" />
+                          ) : (
+                            <UserCheck className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteUser(user.id, user.name)}
+                          title="Delete User"
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </td>

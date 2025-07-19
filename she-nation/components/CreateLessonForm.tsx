@@ -1,15 +1,23 @@
-// components/CreateLessonForm.tsx (or directly paste into your CourseContent.tsx)
+"use client";
 
 import React, { useState } from "react";
 import { PlusCircle, X } from "lucide-react";
 import { useCreateLessonMutation } from "@/lib/api/lessonsApi";
 import { addNotification } from "@/lib/slices/notificationsSlice";
-import { useAppDispatch } from "@/lib/hooks"; // Assuming you use this for notifications
+import { useAppDispatch } from "@/lib/hooks";
 
 interface CreateLessonFormProps {
   courseId: number;
-  onLessonCreated: () => void; // Callback after successful lesson creation
-  onCancel: () => void; // Callback to close the form/modal
+  onLessonCreated: () => void;
+  onCancel: () => void;
+}
+
+// ✅ Helper to extract YouTube video ID from any YouTube URL
+function extractYouTubeId(url: string): string | null {
+  const regex =
+    /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
 }
 
 export function CreateLessonForm({
@@ -22,9 +30,9 @@ export function CreateLessonForm({
 
   const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
-  const [imageUrl, setImageUrl] = useState(""); // State for image URL
+  const [imageUrl, setImageUrl] = useState("");
   const [durationMinutes, setDurationMinutes] = useState(0);
-  const [order, setOrder] = useState(1); // Default order to 1
+  const [order, setOrder] = useState(1);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +48,7 @@ export function CreateLessonForm({
       );
       return;
     }
+
     if (durationMinutes <= 0) {
       dispatch(
         addNotification({
@@ -51,6 +60,7 @@ export function CreateLessonForm({
       );
       return;
     }
+
     if (order <= 0) {
       dispatch(
         addNotification({
@@ -67,8 +77,8 @@ export function CreateLessonForm({
       await createLesson({
         course: courseId,
         title,
-        video_url: videoUrl || null, 
-        image_url: imageUrl || null, 
+        video_url: videoUrl || null,
+        image_url: imageUrl || null,
         duration_minutes: durationMinutes,
         order,
       }).unwrap();
@@ -81,8 +91,10 @@ export function CreateLessonForm({
           read: false,
         })
       );
-      onLessonCreated(); // Call success callback
-      // Optionally reset form fields
+
+      onLessonCreated();
+
+      // Reset form fields
       setTitle("");
       setVideoUrl("");
       setImageUrl("");
@@ -130,12 +142,13 @@ export function CreateLessonForm({
               required
             />
           </div>
+
           <div>
             <label
               htmlFor="videoUrl"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Video URL (Optional)
+              Video URL (YouTube or others)
             </label>
             <input
               type="url"
@@ -143,9 +156,29 @@ export function CreateLessonForm({
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
-              placeholder="e.g., https://example.com/video.mp4"
+              placeholder="e.g., https://youtu.be/abc123XYZ"
             />
           </div>
+
+          {/* ✅ Show YouTube preview if valid */}
+          {videoUrl && extractYouTubeId(videoUrl) && (
+            <div className="mt-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                YouTube Video Preview
+              </label>
+              <div className="aspect-video w-full">
+                <iframe
+                  className="w-full h-64 rounded-md"
+                  src={`https://www.youtube.com/embed/${extractYouTubeId(
+                    videoUrl
+                  )}`}
+                  title="YouTube video preview"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <label
               htmlFor="imageUrl"
@@ -162,6 +195,7 @@ export function CreateLessonForm({
               placeholder="e.g., https://example.com/image.jpg"
             />
           </div>
+
           <div>
             <label
               htmlFor="durationMinutes"
@@ -181,6 +215,7 @@ export function CreateLessonForm({
               required
             />
           </div>
+
           <div>
             <label
               htmlFor="order"
@@ -198,6 +233,7 @@ export function CreateLessonForm({
               required
             />
           </div>
+
           <div className="flex justify-end space-x-3 mt-6">
             <button
               type="button"

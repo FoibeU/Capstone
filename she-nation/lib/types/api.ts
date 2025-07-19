@@ -37,6 +37,17 @@ export type AllUsersResponse = User[];
 export type VerifyUserPayload = { user_id: number };
 export type VerifyUserResponse = { detail: string };
 
+export type DeleteUserResponse = { detail: string };
+
+export type UpdateUserStatusPayload = {
+  user_id: number;
+  is_active: boolean;
+};
+export type UpdateUserStatusResponse = {
+  detail: string;
+  user: User;
+};
+
 // Profile Types
 export type ProfilePayload = {
   bio: string;

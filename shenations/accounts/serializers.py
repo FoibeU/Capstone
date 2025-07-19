@@ -22,9 +22,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'name', 'email', 'phone', 'location', 'role', 'education_level'
+            'id', 'name', 'email', 'phone', 'location', 'role', 'education_level', 'is_active', 'date_registered'
         ]
-        read_only_fields = ['id', 'email']
+        read_only_fields = ['id', 'email', 'date_registered']
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -116,7 +116,14 @@ class BookingCreateSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     mentor = serializers.StringRelatedField()
     mentee = serializers.StringRelatedField()
+    mentor_id = serializers.IntegerField(source='mentor.id', read_only=True)
+    mentee_id = serializers.IntegerField(source='mentee.id', read_only=True)
 
     class Meta:
         model = Booking
-        fields = ['id', 'mentor', 'mentee', 'day', 'time', 'title', 'note']
+        fields = ['id', 'mentor', 'mentee', 'mentor_id', 'mentee_id', 'day', 'time', 'title', 'note', 'status', 'created_at', 'updated_at']
+
+class BookingUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ['status']

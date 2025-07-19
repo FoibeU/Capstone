@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'  # Updated to latest v3 spec for better compatibility
 
 services:
   web:
@@ -24,7 +24,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     ports:
-      - "5434:5432" 
+      - "5434:5432"
     networks:
       - app-network
 
