@@ -176,10 +176,10 @@ export function CoursesPageContent() {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold font-poppins gradient-text mb-4">
-          Explore Courses
+          Explore More content to empower you 
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Discover a wide range of courses designed to empower your career and
+          Discover a wide range of content and resources  designed to empower your career and
           personal growth.
         </p>
         <div className="flex items-center justify-between mb-6">

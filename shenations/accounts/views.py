@@ -159,7 +159,7 @@ class VerifyUserView(APIView):
         text_content = (
             f"Hello {user.name},\n\n"
             "Your account has been successfully verified and is now active.\n\n"
-            "Thank you!"
+            "Thank you! you can join here capstone-kohl-chi.vercel.app"
         )
 
         html_content = f"""
@@ -167,7 +167,7 @@ class VerifyUserView(APIView):
             <h2 style="color: #2e6c80;">Account Verified ✅</h2>
             <p>Hello <strong>{user.name}</strong>,</p>
             <p>Your account has been <span style="color: green;"><strong>successfully verified</strong></span> and is now active.</p>
-            <p style="margin-top: 20px;">Thank you for joining our platform.</p>
+            <p style="margin-top: 20px;">Thank you for joining Us Click https://capstone-kohl-chi.vercel.app/ to login and enjoy our service</p>
             <p style="color: #888; font-size: 13px; margin-top: 30px;">This is an automated message. Please do not reply.</p>
         </div>
         """

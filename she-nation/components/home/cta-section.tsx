@@ -32,7 +32,7 @@ export function CTASection() {
               href="/courses"
               className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-purple-600 transition-all duration-300"
             >
-              Explore Courses
+              Explore more
             </Link>
           </div>
 
