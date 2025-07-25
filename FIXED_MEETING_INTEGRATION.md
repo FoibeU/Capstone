@@ -7,7 +7,7 @@ https://meet.google.com/shenation-123-mentor-mentee
 ```
 These resulted in Google's "whoops" error page because they weren't real meeting rooms.
 
-## ✅ **New Solution**
+##  **New Solution**
 
 ### **Real Meeting Platform Integration**
 
