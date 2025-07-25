@@ -91,18 +91,11 @@ Live deployment of the SheNation platform is available at:
 * **Backend:** https://capstone-o3oh.onrender.com     (deployed on render)
 * **Frontend:** https://capstone-kohl-chi.vercel.app    (deployed on vercel)
 
-
+This hosted version allows users and stakeholders to interact with the platform in a real-time setting and test all core functionalities.
 
 ### Demo Video link
 
 https://youtu.be/5LxqeZTtoak 
-
-
-### Zip File
-
-[Capstone-main (2).zip](https://github.com/user-attachments/files/21418158/Capstone-main.2.zip)
-
-
 
 
 

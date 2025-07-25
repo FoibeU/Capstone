@@ -3,7 +3,7 @@
 ## Overview
 This implementation provides mentors with the ability to approve or deny booking requests from mentees. The system includes database models, API endpoints, management commands, and frontend components.
 
-##  What Has Been Implemented
+## ✅ What Has Been Implemented
 
 ### 1. Database Model Updates (`shenations/accounts/models.py`)
 
@@ -73,7 +73,7 @@ python manage.py manage_bookings --mentor-email mentor@example.com --action deny
 - Loading states and confirmation dialogs
 - Toast notifications for feedback
 
-##  How to Use
+## 🔧 How to Use
 
 ### For Mentors (Web Interface):
 1. Navigate to "Booking Requests" in the navigation menu
@@ -111,7 +111,7 @@ python manage.py manage_bookings --mentor-email your@email.com --action deny --b
 - Proper error handling for invalid requests
 - Confirmation dialogs prevent accidental actions
 
-##  Status Flow
+## 📊 Status Flow
 
 ```
 Mentee creates booking → Status: "pending"
@@ -123,7 +123,7 @@ Status: "approved" OR "denied"
 Booking confirmed/rejected
 ```
 
-##  UI/UX Features
+## 🎨 UI/UX Features
 
 **Visual Indicators:**
 - 🟢 Green: Approved bookings
@@ -139,7 +139,7 @@ Booking confirmed/rejected
 - Toast notifications for feedback
 - Confirmation dialogs for critical actions
 
-## Testing
+## 🧪 Testing
 
 **Test Coverage:**
 - Model method testing (approve/deny functionality)
@@ -156,7 +156,7 @@ python manage.py test accounts.tests.BookingApprovalTestCase
 python manage.py test accounts
 ```
 
-##  Next Steps
+## 🚀 Next Steps
 
 **To Complete Setup:**
 1. Configure database connection in Django settings
@@ -171,7 +171,7 @@ python manage.py test accounts
 - Calendar integration for approved bookings
 - Automated reminders for pending requests
 
-##  API Usage Examples
+## 📝 API Usage Examples
 
 **Approve a booking:**
 ```bash
